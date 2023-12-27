@@ -5,7 +5,6 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -34,7 +33,7 @@ public class Server implements Runnable {
                 connections.add(handler);
                 pool.execute(handler);
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             shutdown();
         }
     }
@@ -50,6 +49,7 @@ public class Server implements Runnable {
     public void shutdown() {
         try {
             done = true;
+            pool.shutdown();
             if (!server.isClosed()) {
                 server.close();
             }
